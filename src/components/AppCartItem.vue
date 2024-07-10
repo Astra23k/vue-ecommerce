@@ -1,6 +1,6 @@
 <template>
   <div class="border border-slate-200 p-4 rounded-xl">
-    <img src="/furniture/furniture-1.jpg" :alt="furniture - 1" />
+    <img src="/furniture/furniture-1.jpg" alt="Furniture" />
     <div class="flex justify-between">
       <p>Furniture</p>
 
