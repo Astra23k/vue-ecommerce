@@ -3,7 +3,7 @@ import AppCard from './AppCard.vue'
 </script>
 
 <template>
-  <div class="grid gap-6 grid-cols-1 sm:grid-cols-3 lg:grid-cols-5">
+  <div class="grid gap-6 grid-cols-1 sm:grid-cols-3 lg:grid-cols-6">
     <AppCard
       imageUrl="/furniture/furniture-1.jpg"
       title="Chair Nixon Textile Beige"
@@ -93,6 +93,24 @@ import AppCard from './AppCard.vue'
       title="Floor lamp Billy White"
       :price="95740"
       altName="furniture-15"
+    />
+    <AppCard
+      imageUrl="/furniture/furniture-16.jpg"
+      title="Sofa Isla Grafit"
+      :price="169390"
+      altName="furniture-16"
+    />
+    <AppCard
+      imageUrl="/furniture/furniture-17.jpg"
+      title="Newbury Armchair Velvet Navy Blue"
+      :price="67140"
+      altName="furniture-17"
+    />
+    <AppCard
+      imageUrl="/furniture/furniture-18.jpg"
+      title="Showcase Stella White"
+      :price="34970"
+      altName="furniture-18"
     />
   </div>
 </template>
