@@ -1,5 +1,5 @@
 <template>
-  <div class="flex items-center gap-4">
+  <div class="flex items-center gap-4 mb-4">
     <img
       src="/arrow-next.svg"
       class="h-6 opacity-50 cursor-pointer hover:opacity-100 transition hover:-translate-x-1"
