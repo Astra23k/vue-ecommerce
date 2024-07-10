@@ -10,6 +10,9 @@ import AppCartItem from './AppCartItem.vue'
       <AppDrawerHead />
 
       <AppCartItem />
+      <AppCartItem />
+      <AppCartItem />
+      <AppCartItem />
     </div>
   </div>
 </template>
