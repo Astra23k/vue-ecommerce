@@ -8,6 +8,5 @@ import AppCartItem from './AppCartItem.vue'
     <AppCartItem />
     <AppCartItem />
     <AppCartItem />
-    <AppCartItem />
   </div>
 </template>

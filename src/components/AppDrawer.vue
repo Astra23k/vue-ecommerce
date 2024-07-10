@@ -10,6 +10,19 @@ import AppCartItemList from './AppCartItemList.vue'
       <AppDrawerHead />
 
       <AppCartItemList />
+
+
+      <div>
+
+
+            <div class="flex">
+              <span>Total</span>
+              <div class="flex-1 border-b border-dashed"></div>
+              <b>133100 kzt</b>
+            </div>
+
+
+      </div>
     </div>
   </div>
 </template>
