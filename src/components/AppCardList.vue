@@ -4,7 +4,6 @@ import AppCard from './AppCard.vue'
 defineProps({
   items: Array
 })
-
 </script>
 
 <template>
@@ -17,6 +16,5 @@ defineProps({
       :price="item.price"
       :altName="item.altName"
     />
-   
   </div>
 </template>

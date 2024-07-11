@@ -5,13 +5,20 @@
       <AppHeader />
       <AppBanner />
       <div class="p-10">
-        <div class="flex justify-between items-center mb-10">
+        <div class="flex flex-wrap justify-between items-center mb-10 space-y-4 md:space-y-0">
           <h1 class="text-3xl font-bold">New Arrivals</h1>
-          <select class="py-2 px-4 border rounded-xl outline-none border-slate-300">
-            <option>By Name</option>
-            <option>By Price - low</option>
-            <option>By Price - high</option>
-          </select>
+          <div class="flex space-x-4 w-full md:w-auto">
+            <input
+              type="text"
+              placeholder="Search"
+              class="border border-gray-300 rounded-xl pr-2 outline-none focus:border-gray-400 px-2 py-1 text-base w-full md:w-auto"
+            />
+            <select class="py-2 px-4 border rounded-xl outline-none border-slate-300">
+              <option>All Filters</option>
+              <option>By Price - low</option>
+              <option>By Price - high</option>
+            </select>
+          </div>
         </div>
 
         <AppCardList :items="items" />
@@ -27,7 +34,7 @@ import axios from 'axios'
 import AppHeader from './components/AppHeader.vue'
 import AppBanner from './components/AppBanner.vue'
 import AppCardList from './components/AppCardList.vue'
-import AppDrawer from './components/AppDrawer.vue'
+// import AppDrawer from './components/AppDrawer.vue'
 
 const items = ref([])
 
