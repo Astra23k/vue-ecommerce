@@ -13,7 +13,7 @@
       class="flex flex-col md:flex-row items-center w-full md:w-auto justify-between md:justify-center flex-grow space-y-1 md:space-y-0"
     >
       <ul
-        class="flex flex-col md:flex-row space-y-1 md:space-y-0 md:space-x-4 text-neutral-900 mx-auto"
+        class="flex flex-col md:flex-row space-y-1 md:space-y-0 md:space-x-10 text-neutral-900 mx-auto"
       >
         <li><a href="#" class="font-bold text-base">HOME</a></li>
         <li><a href="#" class="font-bold text-base">COLLECTIONS</a></li>
