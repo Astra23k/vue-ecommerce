@@ -13,14 +13,14 @@
       class="flex flex-col md:flex-row items-center w-full md:w-auto justify-between md:justify-center flex-grow space-y-1 md:space-y-0"
     >
       <ul
-        class="flex flex-col md:flex-row space-y-1 md:space-y-0 md:space-x-10 text-neutral-900 mx-auto"
+        class="flex flex-col md:flex-row space-y-1 md:space-y-0 md:space-x-8 text-neutral-900 mx-auto"
       >
         <li><a href="#" class="font-bold text-base">HOME</a></li>
         <li><a href="#" class="font-bold text-base">COLLECTIONS</a></li>
         <li><a href="#" class="font-bold text-base">NEW ARRIVALS</a></li>
       </ul>
       <div class="flex flex-col md:flex-row items-center space-y-1 md:space-y-0 md:ml-4">
-        <ul class="flex flex-col md:flex-row items-center md:space-x-6 space-y-1 md:space-y-0">
+        <ul class="flex flex-col md:flex-row items-center md:space-x-8 space-y-1 md:space-y-0">
           <li class="flex items-center">
             <img src="/cart.svg" alt="Cart" class="h-6 mr-1" />
             <b class="text-sm text-slate-500 hover:text-black cursor-pointer">0 kzt</b>
