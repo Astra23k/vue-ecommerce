@@ -13,10 +13,13 @@
               placeholder="Search"
               class="border border-gray-300 rounded-xl pr-2 outline-none focus:border-gray-400 px-2 py-1 text-base w-full md:w-auto"
             />
-            <select class="py-2 px-4 border rounded-xl outline-none border-slate-300">
-              <option>All Filters</option>
-              <option>By Price - low</option>
-              <option>By Price - high</option>
+            <select
+              @change="onChangeSelect"
+              class="py-2 px-4 border rounded-xl outline-none border-slate-300"
+            >
+              <option value="">All Filters</option>
+              <option value="price">By Price - low</option>
+              <option value="-price">By Price - high</option>
             </select>
           </div>
         </div>
@@ -28,7 +31,7 @@
 </template>
 
 <script setup>
-import { onMounted, ref } from 'vue'
+import { onMounted, reactive, ref, watch } from 'vue'
 import axios from 'axios'
 
 import AppHeader from './components/AppHeader.vue'
@@ -38,14 +41,28 @@ import AppCardList from './components/AppCardList.vue'
 
 const items = ref([])
 
-onMounted(async () => {
+const filters = reactive({
+  sortBy: ''
+})
+
+const fetchItems = async () => {
   try {
-    const { data } = await axios.get('https://cef8e05b069fb362.mokky.dev/items')
+    const { data } = await axios.get(
+      `https://cef8e05b069fb362.mokky.dev/items?sortBy=${filters.sortBy}`
+    )
     items.value = data
   } catch (error) {
     console.log(error)
   }
-})
+}
+
+const onChangeSelect = (event) => {
+  filters.sortBy = event.target.value
+}
+
+onMounted(fetchItems)
+
+watch(filters, fetchItems)
 </script>
 
 <style></style>
