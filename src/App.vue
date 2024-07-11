@@ -1,6 +1,6 @@
 <template>
   <div>
-    <AppDrawer />
+    <!-- <AppDrawer /> -->
     <div class="bg-amber-50 w-11/12 m-auto rounded-3xl shadow-xl mt-10">
       <AppHeader />
       <AppBanner />

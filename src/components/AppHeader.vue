@@ -31,7 +31,7 @@
         <input
           type="text"
           placeholder="Search collections"
-          class="border border-gray-300 rounded-full px-1 sm:px-2 py-0.5 text-xxs sm:text-xs md:text-sm lg:text-base w-full sm:w-auto"
+          class="border border-gray-300 rounded-md pr-2 outline-none focus:border-gray-400 px-1 sm:px-2 py-0.5 text-xxs sm:text-xs md:text-sm lg:text-base w-full sm:w-auto"
         />
         <ul class="flex flex-col sm:flex-row items-center sm:space-x-2 space-y-1 sm:space-y-0">
           <li class="flex items-center">
