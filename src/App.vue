@@ -9,12 +9,13 @@
           <h1 class="text-3xl font-bold">New Arrivals</h1>
           <div class="flex space-x-4 w-full md:w-auto">
             <input
+              @input="updateFilter('searchQuery', $event.target.value)"
               type="text"
               placeholder="Search"
               class="border border-gray-300 rounded-xl pr-2 outline-none focus:border-gray-400 px-2 py-1 text-base w-full md:w-auto"
             />
             <select
-              @change="onChangeSelect"
+              @change="updateFilter('sortBy', $event.target.value)"
               class="py-2 px-4 border rounded-xl outline-none border-slate-300"
             >
               <option value="">All Filters</option>
@@ -23,7 +24,6 @@
             </select>
           </div>
         </div>
-
         <AppCardList :items="items" />
       </div>
     </div>
@@ -42,22 +42,27 @@ import AppCardList from './components/AppCardList.vue'
 const items = ref([])
 
 const filters = reactive({
-  sortBy: ''
+  sortBy: '',
+  searchQuery: ''
 })
 
 const fetchItems = async () => {
   try {
-    const { data } = await axios.get(
-      `https://cef8e05b069fb362.mokky.dev/items?sortBy=${filters.sortBy}`
-    )
+    const params = {
+      sortBy: filters.sortBy
+    }
+    if (filters.searchQuery) {
+      params.title = `*${filters.searchQuery}*`
+    }
+    const { data } = await axios.get('https://cef8e05b069fb362.mokky.dev/items', { params })
     items.value = data
   } catch (error) {
-    console.log(error)
+    console.error('Failed to fetch items:', error)
   }
 }
 
-const onChangeSelect = (event) => {
-  filters.sortBy = event.target.value
+const updateFilter = (key, value) => {
+  filters[key] = value
 }
 
 onMounted(fetchItems)
@@ -65,4 +70,4 @@ onMounted(fetchItems)
 watch(filters, fetchItems)
 </script>
 
-<style></style>
+<style scoped></style>
