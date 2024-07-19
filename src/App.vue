@@ -46,6 +46,27 @@ const filters = reactive({
   searchQuery: ''
 })
 
+const fetchFavorites = async () => {
+  try {
+    const { data: favorites } = await axios.get('https://8b38c9104c9ae01a.mokky.dev/favorites')
+    items.value = items.value.map((item) => {
+      const favorite = favorites.find(favorite => favorite.productId === item.id)
+
+      if (!favorite) {
+        return item
+      }
+
+      return {
+        ...item,
+        isFavorite: true,
+        favoriteId: favorite.id
+      }
+    })
+  } catch (error) {
+    console.error('Failed to fetch favorites:', error)
+  }
+}
+
 const fetchItems = async () => {
   try {
     const params = {
@@ -54,8 +75,12 @@ const fetchItems = async () => {
     if (filters.searchQuery) {
       params.title = `*${filters.searchQuery}*`
     }
-    const { data } = await axios.get('https://cef8e05b069fb362.mokky.dev/items', { params })
-    items.value = data
+    const { data } = await axios.get('https://8b38c9104c9ae01a.mokky.dev/items', { params })
+    items.value = data.map((obj) => ({
+      ...obj,
+      isFavorite: false,
+      isAdded: false
+    }))
   } catch (error) {
     console.error('Failed to fetch items:', error)
   }
@@ -65,7 +90,10 @@ const updateFilter = (key, value) => {
   filters[key] = value
 }
 
-onMounted(fetchItems)
+onMounted(async () => {
+  await fetchItems();
+  await fetchFavorites();
+})
 
 watch(filters, fetchItems)
 </script>

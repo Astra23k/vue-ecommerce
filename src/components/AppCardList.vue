@@ -15,6 +15,7 @@ defineProps({
       :title="item.title"
       :price="item.price"
       :altName="item.altName"
+      :isFavorite="item.isFavorite"
     />
   </div>
 </template>

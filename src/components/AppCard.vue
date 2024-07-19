@@ -17,7 +17,7 @@ defineProps({
       class="relative bg-amber-50 border border-slate-200 rounded-xl cursor-pointer transition hover:-translate-y-2 hover:shadow-xl"
     >
       <img
-        :src="isFavorite ? '/like-1.svg' : '/like-2.svg'"
+        :src="isFavorite ? '/like-2.svg' : '/like-1.svg'"
         alt="Favorite"
         class="h-10 absolute top-2 left-2"
         @click="onClickFavorite"
