@@ -50,7 +50,7 @@ const fetchFavorites = async () => {
   try {
     const { data: favorites } = await axios.get('https://8b38c9104c9ae01a.mokky.dev/favorites')
     items.value = items.value.map((item) => {
-      const favorite = favorites.find(favorite => favorite.productId === item.id)
+      const favorite = favorites.find((favorite) => favorite.productId === item.id)
 
       if (!favorite) {
         return item
@@ -91,8 +91,8 @@ const updateFilter = (key, value) => {
 }
 
 onMounted(async () => {
-  await fetchItems();
-  await fetchFavorites();
+  await fetchItems()
+  await fetchFavorites()
 })
 
 watch(filters, fetchItems)
