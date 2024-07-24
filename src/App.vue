@@ -24,7 +24,7 @@
             </select>
           </div>
         </div>
-        <AppCardList :items="items" />
+        <AppCardList :items="items" @addToFavorites="addToFavorites" />
       </div>
     </div>
   </div>
@@ -65,6 +65,12 @@ const fetchFavorites = async () => {
   } catch (error) {
     console.error('Failed to fetch favorites:', error)
   }
+}
+
+const addToFavorites = async (item) => {
+  item.isFavorite = !item.isFavorite
+
+  console.log(item);
 }
 
 const fetchItems = async () => {

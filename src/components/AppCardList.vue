@@ -4,6 +4,8 @@ import AppCard from './AppCard.vue'
 defineProps({
   items: Array
 })
+
+const emit = defineEmits(['addToFavorites'])
 </script>
 
 <template>
@@ -11,11 +13,13 @@ defineProps({
     <AppCard
       v-for="item in items"
       :key="item.id"
+      :id="item.id"
       :imageUrl="item.imageUrl"
       :title="item.title"
       :price="item.price"
       :altName="item.altName"
       :isFavorite="item.isFavorite"
+      :onClickFavorite="() => emit('addToFavorites', item)"
     />
   </div>
 </template>
