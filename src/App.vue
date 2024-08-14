@@ -1,8 +1,8 @@
 <template>
   <div>
-    <!-- <AppDrawer /> -->
+    <AppDrawer v-if="drawerOpen"/>
     <div class="bg-amber-50 w-11/12 m-auto rounded-3xl shadow-xl mt-10">
-      <AppHeader />
+      <AppHeader @open-cart="openCart" />
       <AppBanner />
       <div class="p-10">
         <div class="flex flex-wrap justify-between items-center mb-10 space-y-4 md:space-y-0">
@@ -24,22 +24,32 @@
             </select>
           </div>
         </div>
-        <AppCardList :items="items" @addToFavorites="addToFavorites" />
+        <AppCardList :items="items" @add-to-favorites="addToFavorites" />
       </div>
     </div>
   </div>
 </template>
 
 <script setup>
-import { onMounted, reactive, ref, watch } from 'vue'
+import { onMounted, provide, reactive, ref, watch } from 'vue'
 import axios from 'axios'
 
 import AppHeader from './components/AppHeader.vue'
 import AppBanner from './components/AppBanner.vue'
 import AppCardList from './components/AppCardList.vue'
-// import AppDrawer from './components/AppDrawer.vue'
+import AppDrawer from './components/AppDrawer.vue'
 
 const items = ref([])
+
+const drawerOpen = ref(false)
+
+const closeCart = () => {
+  drawerOpen.value = false
+}
+
+const openCart = () => {
+  drawerOpen.value = true
+}
 
 const filters = reactive({
   sortBy: '',
@@ -69,6 +79,21 @@ const fetchFavorites = async () => {
 
 const addToFavorites = async (item) => {
   item.isFavorite = !item.isFavorite
+  try {
+    if (item.isFavorite) {
+      const obj = {
+        productId: item.id
+      }
+      const { data } = await axios.post('https://8b38c9104c9ae01a.mokky.dev/favorites', obj)
+      item.favoriteId = data.id
+    } else {
+      await axios.delete(`https://8b38c9104c9ae01a.mokky.dev/favorites/${item.favoriteId}`)
+      item.favoriteId = null
+    }
+  } catch (error) {
+    console.log(error)
+    item.isFavorite = !item.isFavorite
+  }
 }
 
 const fetchItems = async () => {
@@ -83,6 +108,7 @@ const fetchItems = async () => {
     items.value = data.map((obj) => ({
       ...obj,
       isFavorite: false,
+      favoriteId: null,
       isAdded: false
     }))
   } catch (error) {
@@ -100,6 +126,11 @@ onMounted(async () => {
 })
 
 watch(filters, fetchItems)
+
+provide('cartActions', {
+  closeCart,
+  openCart
+})
 </script>
 
 <style scoped></style>
