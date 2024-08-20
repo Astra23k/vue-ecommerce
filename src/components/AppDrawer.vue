@@ -1,18 +1,38 @@
 <script setup>
+import { onMounted, onUnmounted, inject } from 'vue'
 import AppDrawerHead from './AppDrawerHead.vue'
 import AppCartItemList from './AppCartItemList.vue'
+
+const { closeCart } = inject('cartActions')
+
+const handleEscape = (event) => {
+  if (event.key === 'Escape') {
+    closeCart()
+  }
+}
+
+onMounted(() => {
+  window.addEventListener('keydown', handleEscape)
+})
+
+onUnmounted(() => {
+  window.removeEventListener('keydown', handleEscape)
+})
 </script>
 
 <template>
   <div>
-    <div class="fixed top-0 left-0 h-full w-full bg-black bg-opacity-70 z-10"></div>
+    <div
+      class="fixed top-0 left-0 h-full w-full bg-black bg-opacity-70 z-10"
+      @click="closeCart"
+    ></div>
+
     <div
       class="fixed right-0 top-0 h-full bg-white w-full md:w-1/2 lg:w-1/3 xl:w-1/4 z-20 p-4 sm:p-8 overflow-auto"
+      @click.stop
     >
       <AppDrawerHead />
-
       <AppCartItemList />
-
       <div class="flex flex-col gap-4 my-6">
         <div class="flex gap-3 text-sm sm:text-base">
           <span>Total:</span>

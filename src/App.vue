@@ -1,6 +1,6 @@
 <template>
   <div>
-    <AppDrawer v-if="drawerOpen"/>
+    <AppDrawer v-if="drawerOpen" />
     <div class="bg-amber-50 w-11/12 m-auto rounded-3xl shadow-xl mt-10">
       <AppHeader @open-cart="openCart" />
       <AppBanner />
@@ -24,7 +24,7 @@
             </select>
           </div>
         </div>
-        <AppCardList :items="items" @add-to-favorites="addToFavorites" />
+        <AppCardList :items="items" @add-to-favorites="addToFavorites" @add-to-cart="addToCart" />
       </div>
     </div>
   </div>
@@ -40,6 +40,7 @@ import AppCardList from './components/AppCardList.vue'
 import AppDrawer from './components/AppDrawer.vue'
 
 const items = ref([])
+const cart = ref([])
 
 const drawerOpen = ref(false)
 
@@ -93,6 +94,16 @@ const addToFavorites = async (item) => {
   } catch (error) {
     console.log(error)
     item.isFavorite = !item.isFavorite
+  }
+}
+
+const addToCart = (item) => {
+  if (!item.isAdded) {
+    cart.value.push(item)
+    item.isAdded = true
+  } else {
+    cart.value.splice(cart.value.indexOf(item), 1)
+    item.isAdded = false
   }
 }
 
