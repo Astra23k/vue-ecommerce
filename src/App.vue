@@ -24,7 +24,7 @@
             </select>
           </div>
         </div>
-        <AppCardList :items="items" @add-to-favorites="addToFavorites" @add-to-cart="addToCart" />
+        <AppCardList :items="items" @add-to-favorites="addToFavorites" @add-to-cart="onClickAddPlus" />
       </div>
     </div>
   </div>
@@ -98,12 +98,20 @@ const addToFavorites = async (item) => {
 }
 
 const addToCart = (item) => {
+  cart.value.push(item)
+  item.isAdded = true
+}
+
+const removeFromCart = (item) => {
+  cart.value.splice(cart.value.indexOf(item), 1)
+  item.isAdded = false
+}
+
+const onClickAddPlus = (item) => {
   if (!item.isAdded) {
-    cart.value.push(item)
-    item.isAdded = true
+    addToCart(item)
   } else {
-    cart.value.splice(cart.value.indexOf(item), 1)
-    item.isAdded = false
+    removeFromCart(item)
   }
 }
 
@@ -138,9 +146,12 @@ onMounted(async () => {
 
 watch(filters, fetchItems)
 
-provide('cartActions', {
+provide('cart', {
+  cart,
   closeCart,
-  openCart
+  openCart,
+  addToCart,
+  removeFromCart
 })
 </script>
 

@@ -3,7 +3,7 @@ import { onMounted, onUnmounted, inject } from 'vue'
 import AppDrawerHead from './AppDrawerHead.vue'
 import AppCartItemList from './AppCartItemList.vue'
 
-const { closeCart } = inject('cartActions')
+const { closeCart } = inject('cart')
 
 const handleEscape = (event) => {
   if (event.key === 'Escape') {

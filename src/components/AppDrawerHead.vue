@@ -13,5 +13,5 @@
 <script setup>
 import { inject } from 'vue'
 
-const { closeCart } = inject('cartActions')
+const { closeCart } = inject('cart')
 </script>
