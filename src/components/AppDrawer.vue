@@ -41,7 +41,7 @@ onUnmounted(() => {
         </div>
 
         <div class="flex gap-3 text-sm sm:text-base">
-          <span>Tax 15%:</span>
+          <span>Tax 5%:</span>
           <div class="flex-1 border-b border-dashed"></div>
           <b>155100 kzt</b>
         </div>

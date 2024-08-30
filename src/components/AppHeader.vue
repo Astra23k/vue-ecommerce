@@ -23,7 +23,7 @@
         <ul class="flex flex-col md:flex-row items-center md:space-x-8 space-y-1 md:space-y-0">
           <li @click="() => emit('openCart')" class="flex items-center">
             <img src="/cart.svg" alt="Cart" class="h-6 mr-1" />
-            <b class="text-sm text-slate-500 hover:text-black cursor-pointer">0 kzt</b>
+            <b class="text-sm text-slate-500 hover:text-black cursor-pointer">{{ totalPrice }} kzt</b>
           </li>
           <li class="flex items-center">
             <img src="/heart.svg" alt="Heart" class="h-6 mr-1" />
@@ -40,6 +40,10 @@
 </template>
 
 <script setup>
+defineProps({
+  totalPrice: Number
+})
+
 const emit = defineEmits(['openCart'])
 </script>
 

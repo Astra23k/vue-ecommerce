@@ -2,7 +2,7 @@
   <div>
     <AppDrawer v-if="drawerOpen" />
     <div class="bg-amber-50 w-11/12 m-auto rounded-3xl shadow-xl mt-10">
-      <AppHeader @open-cart="openCart" />
+      <AppHeader :total-price="totalPrice" @open-cart="openCart" />
       <AppBanner />
       <div class="p-10">
         <div class="flex flex-wrap justify-between items-center mb-10 space-y-4 md:space-y-0">
@@ -31,7 +31,7 @@
 </template>
 
 <script setup>
-import { onMounted, provide, reactive, ref, watch } from 'vue'
+import { computed, onMounted, provide, reactive, ref, watch } from 'vue'
 import axios from 'axios'
 
 import AppHeader from './components/AppHeader.vue'
@@ -43,6 +43,10 @@ const items = ref([])
 const cart = ref([])
 
 const drawerOpen = ref(false)
+
+const totalPrice = computed(() => {
+  return cart.value.reduce((acc, item) => acc + item.price, 0)
+})
 
 const closeCart = () => {
   drawerOpen.value = false
