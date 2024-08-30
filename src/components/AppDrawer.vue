@@ -2,6 +2,7 @@
 import { onMounted, onUnmounted, inject } from 'vue'
 import AppDrawerHead from './AppDrawerHead.vue'
 import AppCartItemList from './AppCartItemList.vue'
+import AppInfoBlock from './AppInfoBlock.vue'
 
 const { closeCart } = inject('cart')
 
@@ -40,27 +41,39 @@ onUnmounted(() => {
       @click.stop
     >
       <AppDrawerHead />
-      <AppCartItemList />
-      <div class="flex flex-col gap-4 my-6">
-        <div class="flex gap-3 text-sm sm:text-base">
-          <span>Total:</span>
-          <div class="flex-1 border-b border-dashed"></div>
-          <b>{{ totalPrice }} kzt</b>
-        </div>
 
-        <div class="flex gap-3 text-sm sm:text-base">
-          <span>Tax 5%:</span>
-          <div class="flex-1 border-b border-dashed"></div>
-          <b> {{ taxPrice }} kzt</b>
-        </div>
+      <div v-if="!totalPrice" class="flex h-full items-center">
+        <AppInfoBlock
+          title="Cart is empty"
+          description="Add at least one product to place an order."
+          image-url="/empty-cart.svg"
+        />
+      </div>
 
-        <button
-          :disabled="buttonDisabled"
-          @click="() => emit('createOrder')"
-          class="bg-blue-900 text-white px-4 py-2 sm:px-8 sm:py-2 rounded-xl disabled:opacity-50 hover:bg-blue-950 transition cursor-pointer"
-        >
-          Checkout
-        </button>
+      <div v-else>
+        <AppCartItemList />
+
+        <div class="flex flex-col gap-4 my-6">
+          <div class="flex gap-3 text-sm sm:text-base">
+            <span>Total:</span>
+            <div class="flex-1 border-b border-dashed"></div>
+            <b>{{ totalPrice }} kzt</b>
+          </div>
+
+          <div class="flex gap-3 text-sm sm:text-base">
+            <span>Tax 5%:</span>
+            <div class="flex-1 border-b border-dashed"></div>
+            <b> {{ taxPrice }} kzt</b>
+          </div>
+
+          <button
+            :disabled="buttonDisabled"
+            @click="() => emit('createOrder')"
+            class="bg-blue-900 text-white px-4 py-2 sm:px-8 sm:py-2 rounded-xl disabled:opacity-50 hover:bg-blue-950 transition cursor-pointer"
+          >
+            Checkout
+          </button>
+        </div>
       </div>
     </div>
   </div>
