@@ -142,7 +142,7 @@ const addToCart = (item) => {
 }
 
 const removeFromCart = (item) => {
-  cart.value = cart.value.filter(cartItem => cartItem.id !== item.id)
+  cart.value = cart.value.filter((cartItem) => cartItem.id !== item.id)
   item.isAdded = false
 }
 
