@@ -1,6 +1,12 @@
 <template>
   <div>
-    <AppDrawer v-if="drawerOpen" />
+    <AppDrawer
+      v-if="drawerOpen"
+      :total-price="totalPrice"
+      :tax-price="taxPrice"
+      @create-order="createOrder"
+      :button-disabled="cartButtonDisabled"
+    />
     <div class="bg-amber-50 w-11/12 m-auto rounded-3xl shadow-xl mt-10">
       <AppHeader :total-price="totalPrice" @open-cart="openCart" />
       <AppBanner />
@@ -24,7 +30,11 @@
             </select>
           </div>
         </div>
-        <AppCardList :items="items" @add-to-favorites="addToFavorites" @add-to-cart="onClickAddPlus" />
+        <AppCardList
+          :items="items"
+          @add-to-favorites="addToFavorites"
+          @add-to-cart="onClickAddPlus"
+        />
       </div>
     </div>
   </div>
@@ -40,12 +50,21 @@ import AppCardList from './components/AppCardList.vue'
 import AppDrawer from './components/AppDrawer.vue'
 
 const items = ref([])
-const cart = ref([])
+const cart = ref(localStorage.getItem('cart') ? JSON.parse(localStorage.getItem('cart')) : [])
+const isCreateOrder = ref(false)
 
 const drawerOpen = ref(false)
 
 const totalPrice = computed(() => {
   return cart.value.reduce((acc, item) => acc + item.price, 0)
+})
+
+const taxPrice = computed(() => {
+  return Math.round((totalPrice.value * 5) / 100)
+})
+
+const cartButtonDisabled = computed(() => {
+  return isCreateOrder.value ? true : totalPrice.value ? false : true
 })
 
 const closeCart = () => {
@@ -60,6 +79,22 @@ const filters = reactive({
   sortBy: '',
   searchQuery: ''
 })
+
+const createOrder = async () => {
+  try {
+    isCreateOrder.value = true
+    const { data } = await axios.post('https://8b38c9104c9ae01a.mokky.dev/orders', {
+      items: cart.value,
+      totalPrice: totalPrice.value
+    })
+    cart.value = []
+    return data
+  } catch (error) {
+    console.error('Failed to create order:', error)
+  } finally {
+    isCreateOrder.value = false
+  }
+}
 
 const fetchFavorites = async () => {
   try {
@@ -107,7 +142,7 @@ const addToCart = (item) => {
 }
 
 const removeFromCart = (item) => {
-  cart.value.splice(cart.value.indexOf(item), 1)
+  cart.value = cart.value.filter(cartItem => cartItem.id !== item.id)
   item.isAdded = false
 }
 
@@ -128,12 +163,16 @@ const fetchItems = async () => {
       params.title = `*${filters.searchQuery}*`
     }
     const { data } = await axios.get('https://8b38c9104c9ae01a.mokky.dev/items', { params })
-    items.value = data.map((obj) => ({
-      ...obj,
-      isFavorite: false,
-      favoriteId: null,
-      isAdded: false
-    }))
+    items.value = data.map((obj) => {
+      const isCart = !!cart.value.some((item) => item.id === obj.id)
+
+      return {
+        ...obj,
+        isFavorite: false,
+        favoriteId: null,
+        isAdded: isCart
+      }
+    })
   } catch (error) {
     console.error('Failed to fetch items:', error)
   }
@@ -149,6 +188,22 @@ onMounted(async () => {
 })
 
 watch(filters, fetchItems)
+
+watch(
+  cart,
+  () => {
+    localStorage.setItem('cart', JSON.stringify(cart.value))
+    items.value = items.value.map((obj) => {
+      const isCart = !!cart.value.some((item) => item.id === obj.id)
+
+      return {
+        ...obj,
+        isAdded: isCart
+      }
+    })
+  },
+  { deep: true }
+)
 
 provide('cart', {
   cart,

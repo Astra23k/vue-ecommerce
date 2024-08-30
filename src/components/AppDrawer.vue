@@ -5,6 +5,14 @@ import AppCartItemList from './AppCartItemList.vue'
 
 const { closeCart } = inject('cart')
 
+defineProps({
+  totalPrice: Number,
+  taxPrice: Number,
+  buttonDisabled: Boolean
+})
+
+const emit = defineEmits(['createOrder'])
+
 const handleEscape = (event) => {
   if (event.key === 'Escape') {
     closeCart()
@@ -37,17 +45,18 @@ onUnmounted(() => {
         <div class="flex gap-3 text-sm sm:text-base">
           <span>Total:</span>
           <div class="flex-1 border-b border-dashed"></div>
-          <b>133100 kzt</b>
+          <b>{{ totalPrice }} kzt</b>
         </div>
 
         <div class="flex gap-3 text-sm sm:text-base">
           <span>Tax 5%:</span>
           <div class="flex-1 border-b border-dashed"></div>
-          <b>155100 kzt</b>
+          <b> {{ taxPrice }} kzt</b>
         </div>
 
         <button
-          disabled
+          :disabled="buttonDisabled"
+          @click="() => emit('createOrder')"
           class="bg-blue-900 text-white px-4 py-2 sm:px-8 sm:py-2 rounded-xl disabled:opacity-50 hover:bg-blue-950 transition cursor-pointer"
         >
           Checkout
