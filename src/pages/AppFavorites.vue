@@ -1,6 +1,6 @@
 <template>
   <div>
-    <AppCardList :items="favorites" />
+    <AppCardList :items="favorites" is-favorites />
   </div>
 </template>
 
