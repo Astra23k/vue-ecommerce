@@ -2,13 +2,16 @@
   <header
     class="bg-amber-50 rounded-t-3xl px-4 py-3 md:px-8 md:py-4 flex flex-wrap justify-between items-center border-b border-neutral-900"
   >
-    <div class="flex items-center mb-2 md:mb-0 flex-shrink-0">
-      <img src="/logo.png" alt="Logo" class="h-10 mr-3" />
-      <div>
-        <h1 class="text-xl font-bold leading-tight">STOUSTICE</h1>
-        <p class="text-xs">Furniture store</p>
+    <RouterLink to="/">
+      <div class="flex items-center mb-2 md:mb-0 flex-shrink-0">
+        <img src="/logo.png" alt="Logo" class="h-10 mr-3" />
+        <div>
+          <h1 class="text-xl font-bold leading-tight">STOUSTICE</h1>
+          <p class="text-xs">Furniture store</p>
+        </div>
       </div>
-    </div>
+    </RouterLink>
+
     <nav
       class="flex flex-col md:flex-row items-center w-full md:w-auto justify-between md:justify-center flex-grow space-y-1 md:space-y-0"
     >
@@ -23,12 +26,16 @@
         <ul class="flex flex-col md:flex-row items-center md:space-x-8 space-y-1 md:space-y-0">
           <li @click="() => emit('openCart')" class="flex items-center">
             <img src="/cart.svg" alt="Cart" class="h-6 mr-1" />
-            <b class="text-sm text-slate-500 hover:text-black cursor-pointer">{{ totalPrice }} kzt</b>
+            <b class="text-sm text-slate-500 hover:text-black cursor-pointer"
+              >{{ totalPrice }} kzt</b
+            >
           </li>
-          <li class="flex items-center">
-            <img src="/heart.svg" alt="Heart" class="h-6 mr-1" />
-            <b class="text-sm text-slate-500 hover:text-black cursor-pointer">Favorites</b>
-          </li>
+          <RouterLink to="/favorites">
+            <li class="flex items-center">
+              <img src="/heart.svg" alt="Heart" class="h-6 mr-1" />
+              <b class="text-sm text-slate-500 hover:text-black cursor-pointer">Favorites</b>
+            </li>
+          </RouterLink>
           <li class="flex items-center">
             <img src="/profile.svg" alt="Profile" class="h-6 mr-1" />
             <b class="text-sm text-slate-500 hover:text-black cursor-pointer">Profile</b>
@@ -40,6 +47,8 @@
 </template>
 
 <script setup>
+import { RouterLink } from 'vue-router'
+
 defineProps({
   totalPrice: Number
 })

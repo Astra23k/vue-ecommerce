@@ -18,6 +18,7 @@ defineProps({
       class="relative bg-amber-50 border border-slate-200 rounded-xl cursor-pointer transition hover:-translate-y-2 hover:shadow-xl"
     >
       <img
+        v-if="isFavorite"
         :src="isFavorite ? '/like-1.svg' : '/like-2.svg'"
         alt="Favorite"
         class="h-10 absolute top-2 left-2"
@@ -34,6 +35,7 @@ defineProps({
         </div>
 
         <img
+          v-if="isAdded"
           @click="onClickAdd"
           :src="isAdded ? '/checked.svg' : '/plus.svg'"
           alt="Add"
