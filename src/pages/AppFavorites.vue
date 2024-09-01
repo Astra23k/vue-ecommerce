@@ -1,5 +1,6 @@
 <template>
-  <div>
+  <div class="p-10">
+    <h1 class="text-3xl font-bold mb-7">My bookmarks</h1>
     <AppCardList :items="favorites" is-favorites />
   </div>
 </template>

@@ -1,34 +1,3 @@
-<script setup>
-import { onMounted, onUnmounted, inject } from 'vue'
-import AppDrawerHead from './AppDrawerHead.vue'
-import AppCartItemList from './AppCartItemList.vue'
-import AppInfoBlock from './AppInfoBlock.vue'
-
-const { closeCart } = inject('cart')
-
-defineProps({
-  totalPrice: Number,
-  taxPrice: Number,
-  buttonDisabled: Boolean
-})
-
-const emit = defineEmits(['createOrder'])
-
-const handleEscape = (event) => {
-  if (event.key === 'Escape') {
-    closeCart()
-  }
-}
-
-onMounted(() => {
-  window.addEventListener('keydown', handleEscape)
-})
-
-onUnmounted(() => {
-  window.removeEventListener('keydown', handleEscape)
-})
-</script>
-
 <template>
   <div>
     <div
@@ -42,8 +11,16 @@ onUnmounted(() => {
     >
       <AppDrawerHead />
 
-      <div v-if="!totalPrice" class="flex h-full items-center">
+      <div v-if="!totalPrice || orderCreated" class="flex h-full items-center">
         <AppInfoBlock
+          v-if="orderCreated"
+          title="The order has been placed!"
+          :description="`Your order #${orderCreated} will soon be transferred to the courier delivery.`"
+          image-url="/order-success.svg"
+        />
+
+        <AppInfoBlock
+          v-if="!totalPrice && !orderCreated"
           title="Cart is empty"
           description="Add at least one product to place an order."
           image-url="/empty-cart.svg"
@@ -68,7 +45,7 @@ onUnmounted(() => {
 
           <button
             :disabled="buttonDisabled"
-            @click="() => emit('createOrder')"
+            @click="createOrder"
             class="bg-blue-900 text-white px-4 py-2 sm:px-8 sm:py-2 rounded-xl disabled:opacity-50 hover:bg-blue-950 transition cursor-pointer"
           >
             Checkout
@@ -78,3 +55,61 @@ onUnmounted(() => {
     </div>
   </div>
 </template>
+
+<script setup>
+import { onMounted, onUnmounted, inject, ref, computed } from 'vue'
+import axios from 'axios'
+import AppDrawerHead from './AppDrawerHead.vue'
+import AppCartItemList from './AppCartItemList.vue'
+import AppInfoBlock from './AppInfoBlock.vue'
+
+const isCreateOrder = ref(false)
+
+const { cart, closeCart } = inject('cart')
+
+const orderCreated = ref(null)
+
+const props = defineProps({
+  totalPrice: Number,
+  taxPrice: Number
+})
+
+const handleEscape = (event) => {
+  if (event.key === 'Escape') {
+    closeCart()
+  }
+}
+
+const createOrder = async () => {
+  try {
+    isCreateOrder.value = true
+    const { data } = await axios.post('https://8b38c9104c9ae01a.mokky.dev/orders', {
+      items: cart.value,
+      totalPrice: props.totalPrice
+    })
+    cart.value = []
+
+    return (orderCreated.value = data.id)
+  } catch (error) {
+    console.error('Failed to create order:', error)
+  } finally {
+    isCreateOrder.value = false
+  }
+}
+
+const cartIsEmpty = computed(() => {
+  return cart.value.length === 0
+})
+
+const buttonDisabled = computed(() => {
+  return isCreateOrder.value || cartIsEmpty.value
+})
+
+onMounted(() => {
+  window.addEventListener('keydown', handleEscape)
+})
+
+onUnmounted(() => {
+  window.removeEventListener('keydown', handleEscape)
+})
+</script>

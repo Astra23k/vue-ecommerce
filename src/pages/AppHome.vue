@@ -25,6 +25,7 @@
 </template>
 
 <script setup>
+import debounce from 'lodash.debounce'
 import axios from 'axios'
 import { reactive, watch, ref, onMounted } from 'vue'
 import AppCardList from '../components/AppCardList.vue'
@@ -40,8 +41,34 @@ const filters = reactive({
   searchQuery: ''
 })
 
+const debouncedFetchItems = debounce(async (filters) => {
+  try {
+    const params = {
+      sortBy: filters.sortBy
+    }
+    if (filters.searchQuery) {
+      params.title = `*${filters.searchQuery}*`
+    }
+    const { data } = await axios.get('https://8b38c9104c9ae01a.mokky.dev/items', { params })
+    items.value = data.map((obj) => {
+      const isCart = !!cart.value.some((item) => item.id === obj.id)
+
+      return {
+        ...obj,
+        isFavorite: false,
+        favoriteId: null,
+        isAdded: isCart
+      }
+    })
+    await fetchFavorites()
+  } catch (error) {
+    console.error('Failed to fetch items:', error)
+  }
+}, 500)
+
 const updateFilter = (key, value) => {
   filters[key] = value
+  debouncedFetchItems(filters)
 }
 
 const onClickAddPlus = (item) => {
@@ -92,36 +119,11 @@ const fetchFavorites = async () => {
   }
 }
 
-const fetchItems = async () => {
-  try {
-    const params = {
-      sortBy: filters.sortBy
-    }
-    if (filters.searchQuery) {
-      params.title = `*${filters.searchQuery}*`
-    }
-    const { data } = await axios.get('https://8b38c9104c9ae01a.mokky.dev/items', { params })
-    items.value = data.map((obj) => {
-      const isCart = !!cart.value.some((item) => item.id === obj.id)
-
-      return {
-        ...obj,
-        isFavorite: false,
-        favoriteId: null,
-        isAdded: isCart
-      }
-    })
-    await fetchFavorites()
-  } catch (error) {
-    console.error('Failed to fetch items:', error)
-  }
-}
-
 onMounted(async () => {
   const localCart = localStorage.getItem('cart')
   cart.value = localCart ? JSON.parse(localCart) : []
 
-  await fetchItems()
+  await debouncedFetchItems(filters)
 
   items.value = items.value.map((item) => ({
     ...item,
@@ -136,7 +138,9 @@ watch(cart, () => {
   }))
 })
 
-watch(filters, fetchItems)
+watch(filters, () => {
+  debouncedFetchItems(filters)
+})
 </script>
 
 <style scoped></style>

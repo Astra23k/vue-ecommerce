@@ -6,7 +6,7 @@ const { cart, removeFromCart } = inject('cart')
 </script>
 
 <template>
-  <div class="flex flex-col gap-2" v-auto-animate>
+  <div class="flex flex-col gap-2">
     <AppCartItem
       v-for="item in cart"
       :key="item.id"
